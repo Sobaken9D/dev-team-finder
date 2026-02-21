@@ -10,13 +10,36 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
 
-  fullName String
-  email    String   @unique
-  password String
-  role     UserRole @default(USER)
-  verified DateTime
+  // Основная информация
+  fullName     String?
+  email        String        @unique
+  password     String
+  role         UserRole      @default(USER)
+  verified     DateTime
+  username     String        @unique
+  avatar       String?
+  country      String?
+  about        String?
+  englishLevel EnglishLevel?
 
-  // авторизация через соц.сеть
+  // Образование и опыт
+  education  String?
+  experience ExperienceLevel?
+
+  // Стэк
+  programmingLanguages ProgrammingLanguage[]
+  frameworks           Framework[]
+  tools                Tool[]
+
+  // Пет-проекты
+  // petProjects Json?
+
+  // Контакты
+  telegram String?
+  github   String?
+  discord  String?
+
+  // Авторизация через соц.сеть
   provider   String?
   providerId String?
 
@@ -24,7 +47,52 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+// Языки программирования, фреймворки и инструменты
+
+model ProgrammingLanguage {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  users      User[]
+  frameworks Framework[]
+}
+
+model Framework {
+  id                    Int                  @id @default(autoincrement())
+  name                  String               @unique
+  users                 User[]
+  programmingLanguage   ProgrammingLanguage? @relation(fields: [programmingLanguageId], references: [id])
+  programmingLanguageId Int?
+}
+
+model Tool {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  category    String?
+  users       User[]
+}
+
 enum UserRole {
   USER
   ADMIN
 }
+
+enum ExperienceLevel {
+  JUNIOR
+  MIDDLE
+  SENIOR
+}
+
+enum EnglishLevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+// поле stackId ссылается на id в модели Stack
+// добавляет обратную свять и можно будет обратиться к стеку через эту модель
+// stack   Stack? @relation(fields: [stackId], references: [id])
+// stackId Int?

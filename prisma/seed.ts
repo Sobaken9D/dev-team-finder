@@ -1,25 +1,24 @@
 import {prisma} from '@/prisma/prisma-client';
-import {hashSync} from "bcrypt";
+import {frameworksSeed, languagesSeed, toolsSeed, usersSeed} from "./seeds";
 
 async function up() {
-  await prisma.user.create({
-    data: {
-      name: 'USER',
-      email: 'user@email.com',
-    }
-  })
+  // await не замораживает выполнение
+  // сreate возвращает промис
+  // Promise.all параллельное выполнение промисов
 
-  await prisma.user.create({
-    data: {
-      name: 'ADMIN',
-      email: 'admin@email.com',
-    }
-  })
+  // Заполняем БД
+  await languagesSeed();
+  await toolsSeed();
+  await frameworksSeed();
+  await usersSeed();
 }
 
 // очистка данных перед генерацией
 async function down() {
   await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "ProgrammingLanguage" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "Framework" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "Tool" RESTART IDENTITY CASCADE`;
 }
 
 async function main() {
