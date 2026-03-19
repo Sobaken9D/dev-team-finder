@@ -11,16 +11,17 @@ model User {
   id Int @id @default(autoincrement())
 
   // Основная информация
-  fullName     String?
-  email        String        @unique
-  password     String
-  role         UserRole      @default(USER)
-  verified     DateTime
-  username     String        @unique
-  avatar       String?
-  country      String?
-  about        String?
-  englishLevel EnglishLevel?
+  fullName      String?
+  email         String        @unique
+  emailVerified DateTime?
+  password      String
+  role          UserRole      @default(USER)
+  verified      DateTime
+  username      String        @unique
+  avatar        String?
+  country       String?
+  about         String?
+  englishLevel  EnglishLevel?
 
   // Образование и опыт
   education  String?
@@ -70,6 +71,15 @@ model Tool {
   description String?
   category    String?
   users       User[]
+}
+
+model VerificationToken {
+  id      Int      @id @default(autoincrement())
+  email   String // Email для которого создан токен
+  token   String   @unique // Уникальный токен
+  expires DateTime // Когда истекает
+
+  @@unique([email, token]) // Составной уникальный ключ
 }
 
 enum UserRole {

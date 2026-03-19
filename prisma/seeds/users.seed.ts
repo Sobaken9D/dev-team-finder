@@ -6,7 +6,7 @@ export async function usersSeed() {
   await prisma.user.create({
     data: {
       fullName: 'Иван Петров',
-      email: 'ivan.petrov@example.com',
+      email: 'ddrevetnak123@gmail.com',
       password: hashSync('password123', 10),
       role: 'USER',
       verified: new Date(),
