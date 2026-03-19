@@ -15,11 +15,7 @@ export const {
       // пропускаем сразу, если вход через гугл
       if (account?.provider !== "credentials") return true;
 
-      console.log("DEBUG: Checking user in signIn callback:", user.id);
-
       const existingUser = await getUserById(user.id ?? "");
-
-      console.log("DEBUG: existingUser from DB:", existingUser);
 
       if (!existingUser?.emailVerified) {
         console.log("DEBUG: Access Denied because emailVerified is null/undefined");

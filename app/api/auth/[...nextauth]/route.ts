@@ -6,16 +6,3 @@
 // 4. Пользователь входит в систему
 
 export {GET, POST} from '@/configs/auth';
-
-//
-// import { handlers } from "@/configs/auth" // Импортируем из вашего конфига выше
-//
-// export const { GET, POST } = handlers
-
-// import NextAuth from "next-auth";
-// import { authConfig } from "@/configs/auth";
-//
-// const handler = NextAuth(authConfig);
-//
-// export { handler as GET, handler as POST };
-

@@ -20,6 +20,7 @@ import {useState} from "react";
 import {register} from "@/actions/register";
 import {FormSuccess} from "./form-success";
 import {FormError} from "./form-error";
+import {Social} from "@/shared/components/shared/auth/social";
 
 
 const RegisterForm = () => {
@@ -60,6 +61,7 @@ const RegisterForm = () => {
       backButtonLabel="Already have an account"
       showSocial
     >
+      <Social/>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

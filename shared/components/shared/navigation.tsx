@@ -19,8 +19,6 @@ type Props = {
 export const Navigation = ({navLinks}: Props) => {
   const pathname = usePathname();
   const session = useSession();
-  // console.log(session);
-  2
 
   return (
     <>
@@ -43,7 +41,7 @@ export const Navigation = ({navLinks}: Props) => {
         onClick={() => signOut({
           callbackUrl: "/"
         })}
-      >Sign Out</Link>) : (<Link href="/api/auth/signin">Sign In</Link>)}
+      >Sign Out</Link>) : (<Link href="/register">Sign In</Link>)}
     </>
   );
 }
