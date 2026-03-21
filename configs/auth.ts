@@ -1,6 +1,6 @@
 import {PrismaAdapter} from "@auth/prisma-adapter";
 import {prisma} from "@/prisma/prisma-client";
-import {getUserById} from "@/data/user";
+import {getUserByEmail, getUserById} from "@/data/user";
 import NextAuth from "next-auth";
 import authConfig from "@/configs/auth.config";
 
@@ -13,12 +13,16 @@ export const {
   callbacks: {
     async signIn({user, account}) {
       // пропускаем сразу, если вход через гугл
+      // if (account?.provider === "google") {
+      //   console.log("123213123213213213123213123123213123123123131231231232131232132132131232131231232131231231231312312312321312321321321312321312312321312312312313123123123123132112321")
+      // }
+
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id ?? "");
 
-      if (!existingUser?.emailVerified) {
-        console.log("DEBUG: Access Denied because emailVerified is null/undefined");
+      // разрешаем вход только после подтверждения email
+      if(!existingUser?.emailVerified) {
         return false;
       }
 

@@ -15,7 +15,7 @@ interface CardWrapperProps {
   backButtonLabel: string;
   title: string;
   showSocial?: boolean;
-  backButtonHref: string;
+  backButtonHref?: string;
 }
 
 const CardWrapper = ({
@@ -36,10 +36,12 @@ const CardWrapper = ({
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>
-        <BackButton
-          label={backButtonLabel}
-          href={backButtonHref}
-        />
+        {backButtonHref && (
+          <BackButton
+            label={backButtonLabel}
+            href={backButtonHref}
+          />
+        )}
       </CardFooter>
     </Card>
   );

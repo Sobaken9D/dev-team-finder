@@ -1,9 +1,9 @@
 "use server";
 import * as z from "zod";
-import { LoginSchema } from "@/schemas";
-import { getUserByEmail } from "@/data/user";
-import { signIn } from "@/configs/auth";
-import { AuthError } from "next-auth";
+import {LoginSchema} from "@/schemas";
+import {getUserByEmail} from "@/data/user";
+import {signIn} from "@/configs/auth";
+import {AuthError} from "next-auth";
 
 export const login = async (data: z.infer<typeof LoginSchema>) => {
   // Validate the input data
@@ -11,18 +11,22 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
 
   // If the data is invalid, return an error
   if (!validatedData) {
-    return { error: "Invalid input data" };
+    return {error: "Invalid input data"};
   }
 
   // Destructure the validated data
-  const { email, password } = validatedData;
+  const {email, password} = validatedData;
 
   // Check if user exists
   const userExists = await getUserByEmail(email);
 
   // If the user does not exist, return an error
-  if (!userExists || !userExists.email || !userExists.password) {
-    return { error: "User does not exist" };
+  if (!userExists || !userExists.email) {
+    return {error: "User does not exist"};
+  }
+
+  if (userExists && !userExists.password) {
+    return {error: "This account is linked to a social network. Log in with Google or GitHub or set a password."};
   }
 
   try {
@@ -36,14 +40,14 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
 
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials" };
+          return {error: "Invalid credentials"};
         default:
-          return { error: "Please confirm yours email address" };
+          return {error: "Please confirm yours email address"};
       }
     }
 
     throw error;
   }
 
-  return { success: "User logged in successfully" };
+  return {success: "User logged in successfully"};
 };

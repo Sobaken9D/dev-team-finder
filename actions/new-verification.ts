@@ -1,13 +1,13 @@
 "use server"
 
 import {getUserByEmail} from "@/data/user"
-import {getVerificationTokenByToken} from "@/data/verification-token"
+import {getVerificationEmailTokenByToken} from "@/data/verification-token"
 import {prisma} from "@/prisma/prisma-client";
 
 // для подтверждения почты в БД
 export const newVerification = async (token: string) => {
   // проверка (при переходе по ссылке с почты) создавался ли вообще такой токен?
-  const existingToken = await getVerificationTokenByToken(token);
+  const existingToken = await getVerificationEmailTokenByToken(token);
 
   if (!existingToken) {
     return {error: "Invalid token"};

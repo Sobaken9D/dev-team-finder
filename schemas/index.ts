@@ -23,7 +23,34 @@ export const LoginSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address",
   }),
-  password: z.string().min(1, {
+  password: z.string().min(6, {
     message: "Please enter a valid password",
+  })
+});
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email({
+    message: "Please enter a valid email address",
+  })
+});
+
+// export const ResetPasswordSchema = z.object({
+//   password: z.string().min(6, {
+//     message: "Password must be at least 6 characters long."
+//   }),
+//   passwordConfirmation: z.string().min(6, {
+//     message: "Password must be at least 6 characters long."
+//   })
+// });
+
+export const ResetPasswordSchema = z.object({
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters long."
   }),
+  passwordConfirmation: z.string().min(6, {
+    message: "Password must be at least 6 characters long."
+  })
+}).refine((data) => data.password === data.passwordConfirmation, {
+  message: "Passwords do not match",
+  path: ["passwordConfirmation"], // указываем, на каком поле показывать ошибку
 });

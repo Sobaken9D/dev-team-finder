@@ -15,20 +15,16 @@ export const getUserByEmail = async (email: string) => {
   }
 }
 
-export const getUserById = async (id: string | number) => {
+export const getUserById = async (id: string) => {
   try {
-    const numericId = typeof id === "string" ? parseInt(id, 10) : id;
-
-    if (isNaN(numericId)) return null; // Если передали не числовую строку
-
     const user = await prisma.user.findUnique({
       where: {
-        id: numericId
+        id
       }
     });
 
     return user;
   } catch (error) {
-    return null;
+    return null
   }
 }
